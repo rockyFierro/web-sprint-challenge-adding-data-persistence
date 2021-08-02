@@ -1,23 +1,29 @@
-// build your `/api/projects` router here
-const router = require('express').Router();
-const Project = require('./model');
- 
-router.get('/:project_id',
-  (req,res,next) => {
+const express = require('express');
 
-  });
+const Projects = require('./project-model');
 
+const router = express.Router();
 
+router.get('/', (req, res) => {
+  Projects.getProjects()
+    .then((projects) => {
+      res.json(projects);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'Failed to get projects' });
+    });
+});
 
-//// the pit ///////
+router.post('/', (req, res) => {
+  const newProject = req.body;
 
-  router.use( 
-    (err,req,res,next) => { //eslint-disable-line
-      res.json({
-        customMessage: "\nIt's dangerous to go alone;\n take this chance to visit stackOverflow",
-        message: err.message,
-        stack: err.stack
-      });
-  });
+  Projects.addProject(newProject)
+    .then((project) => {
+      res.status(201).json(project);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'Failed to create new project' });
+    });
+});
 
 module.exports = router;
