@@ -1,8 +1,8 @@
 // build your server here and require it from index.js
 const express = require('express');
-const tasksRouter = require('./tasks/tasks-router');
-const resourceRouter = require('./resource/resource-router');
-const projectRouter = require('./project/project-router');
+const tasksRouter = require('./task/router');
+const resourceRouter = require('./resource/router');
+const projectRouter = require('./project/router');
 
 const server = express();
 
