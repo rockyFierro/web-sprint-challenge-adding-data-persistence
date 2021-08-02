@@ -3,22 +3,26 @@
 const router = require('express').Router();
 const Resource = require('.model');
  
-router.get('/:project_id',
-  (req,res,next) => {
+router.get('/', (req, res) => {
+  Resource.getResources()
+    .then((resources) => {
+      res.json(resources);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'Failed to get resources' });
+    });
+});
 
-  });
+router.post('/', (req, res) => {
+  const newResource = req.body;
 
-
-
-//// the pit ///////
-
-  router.use( 
-    (err,req,res,next) => { //eslint-disable-line
-      res.json({
-        customMessage: "\nIt's dangerous to go alone;\n take this chance to visit stackOverflow",
-        message: err.message,
-        stack: err.stack
-      });
-  });
+  Resource.addResource(newResource)
+    .then((resource) => {
+      res.status(201).json(resource);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'Failed to create new resource' });
+    });
+});
 
 module.exports = router;
